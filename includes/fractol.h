@@ -8,12 +8,12 @@
 
 # define WIN_X 600
 # define WIN_Y 400
-# define COLORS 100
+#define TRIP 16
 # define ZOOM 15
 # define KEY_ZOOM 69
 # define KEY_DEZOOM 78
 # define EXIT 53
-# define MOUSE_ON_OFF 49
+# define MOUSE_ON_OFF 31
 # define DEEPER 91
 # define DEEPLESS 93
 # define UP 126
@@ -59,21 +59,28 @@ typedef struct	s_env
 	int			fractal;
 	int			color;
 	int			color_m;
+	int			trip;
 	int			iter_max;
 	int			mouse_on_off;
+	void		(*f)(struct s_env *e);
 }				t_env;
 
 int				give_pixel(int x, int y);
 void			put_pixel(t_env *e, int x, int y, unsigned int c);
 int				count_julia(t_env *e);
+int				count_mandelbrot(t_env *e);
 int				give_color(t_env *e, int i);
+void			do_fractal(t_env *e);
+void			fractal_mandelbrot(t_env *e);
 void			fractal_julia(t_env *e);
-void			init_julia(t_fractal *draw);
+void			fractal_mine(t_env *e);
+void			init_mandelbrot(t_fractal *draw);
 int				mouse_move(int x, int y, t_env *e);
 int				mouse_click(int b, int x, int y, t_env *e);
 void			do_zoom(t_env *e);
 void			do_dezoom(t_env  *e);
 int				fractal(t_env *e, int fractal);
 int				key_fun(int k, t_env *e);
+void			init_fractal(t_env *e, char *argv);
 
 #endif

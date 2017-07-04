@@ -27,7 +27,9 @@ SRC_BASE=main.c\
 		 julia.c\
 		 keyboard_fun.c\
 		 move_fun.c\
-		 fractal_drawer.c
+		 fractal_drawer.c\
+		 mandelbrot.c\
+		 my_fractal.c
 
 OBJ_DIR=obj
 

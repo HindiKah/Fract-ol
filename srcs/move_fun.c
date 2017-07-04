@@ -7,7 +7,13 @@ int		mouse_move(int x, int y, t_env *e)
 		return (0);
 	e->x_2 = x;
 	e->y_2 = y;
-	fractal(e, e->fractal);
+	if (e->trip)
+	{
+		e->color_m += 3000;
+		if (e->color_m > 0xffffff)
+			e->color_m = 0x000000;
+	}
+	e->f(e);
 	return (0);
 }
 
@@ -21,7 +27,7 @@ int		mouse_click(int b, int x, int y, t_env *e)
 		e->y = e->y * 1.2;
 		e->x = e->x * 1.2;
 	}
-	if (b == MOUSE_DEZOOM)
+	if (b == MOUSE_DEZOOM && e->z > 10)
 	{
 		e->x -= x / 5;
 		e->y -= y / 5;
@@ -29,7 +35,7 @@ int		mouse_click(int b, int x, int y, t_env *e)
 		e->y = e->y / 1.2;
 		e->x = e->x / 1.2;
 	}
-	fractal(e, e->fractal);
+	e->f(e);
 	return (0);
 }
 

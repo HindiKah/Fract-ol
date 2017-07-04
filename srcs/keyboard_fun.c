@@ -3,13 +3,13 @@
 static void		move(int k, t_env *e)
 {
 	if (k == DOWN)
-		e->y += 100;
+		e->y += 80;
 	if (k == UP)
-		e->y -= 100;
+		e->y -= 80;
 	if (k == RIGHT)
-		e->x += 100;
+		e->x += 80;
 	if (k == LEFT)
-		e->x -= 100;
+		e->x -= 80;
 }
 
 static void		zoom(int k, t_env *e)
@@ -31,7 +31,8 @@ static void		reset(int k, t_env *e)
 		e->y_2 = WIN_Y / 2;
 		e->color_m = 0x000000;
 		e->iter_max = 50;
-		e->mouse_on_off = 0;
+		e->trip = 0;
+		e->mouse_on_off = 1;
 		e->color = 1;
 	}
 }
@@ -44,6 +45,8 @@ int				key_fun(int k, t_env *e)
 		e->iter_max -= 10;
 	if (k == MOUSE_ON_OFF)
 		e->mouse_on_off = !e->mouse_on_off;
+	if (k == TRIP)
+		e->trip = !e->trip;
 	if (k == EXIT)
 	{
 		mlx_destroy_window(e->mlx_p, e->win);
@@ -52,6 +55,6 @@ int				key_fun(int k, t_env *e)
 	zoom(k, e);
 	move(k, e);
 	reset(k, e);
-	fractal(e, e->fractal);
+	e->f(e);
 	return (0);
 }

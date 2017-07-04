@@ -15,8 +15,9 @@ t_env		*init_env()
 	e->fractal = 0;
 	e->color_m = 0x000000;
 	e->color = 1;
+	e->trip = 0;
 	e->mouse_on_off = 1;
-	e->iter_max = 150;
+	e->iter_max = 50;
 	e->mlx_p = mlx_init();
 	e->img_p = mlx_new_image(e->mlx_p, WIN_X, WIN_Y);
 	e->data = (char*)mlx_get_data_addr(e->img_p,
@@ -25,28 +26,42 @@ t_env		*init_env()
 	return (e);
 }
 
-int			fractal(t_env *e, int fractal)
+void		init_fractal(t_env *e, char *argv)
 {
-	if (fractal == 1)
+	if (!argv)
 	{
-		fractal_julia(e);
-		return (1);
+		init_mandelbrot(e->draw);
+		e->f = &fractal_julia;
+		e->fractal = 1;
+		return;
 	}
-	else if (fractal == 2)
+	if (ft_strcmp(argv, "julia") == 0)
 	{
-		return (1);
+		init_mandelbrot(e->draw);
+		e->f = &fractal_julia;
+		e->fractal = 1;
+		return;
 	}
-	else if (fractal == 3)
+	else if (ft_strcmp(argv, "mandelbrot") == 0)
 	{
-		return (1);
+		init_mandelbrot(e->draw);
+		e->f = &fractal_mandelbrot;
+		e->fractal = 2;
+		return;
 	}
 	else
-		return (0);
+	{
+		init_mandelbrot(e->draw);
+		e->f = &fractal_mine;
+		e->fractal = 3;
+		return;
+	}
 }
+
 
 int			fractal_hook(t_env *e)
 {
-	fractal(e, e->fractal);
+	e->f(e);
 	return (1);
 }
 
@@ -54,20 +69,16 @@ int			main(int argc, char **argv)
 {
 	t_env	*e;
 
-	e = init_env();
 	if (argc > 2)
 		return (0);;
-	if (argv[0][0] == 'w')
-		return (0);
 	e = init_env();
-	init_julia(e->draw);
-	e->fractal = 1;
+	init_fractal(e, argv[1]);
 	e->win = mlx_new_window(e->mlx_p, WIN_X, WIN_Y, "Fractol");
 	mlx_expose_hook(e->win, fractal_hook, e);
 	mlx_key_hook(e->win, key_fun, e);
 	mlx_hook(e->win, MOTION_NOTIFY, PTR_MOTION_MASK, mouse_move, e);
 	mlx_mouse_hook(e->win, mouse_click, e);
-	fractal(e, e->fractal);
+	e->f(e);
 	mlx_loop(e->mlx_p);
 	return (0);
 }

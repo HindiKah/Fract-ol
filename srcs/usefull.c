@@ -8,10 +8,10 @@ int			give_color(t_env *e, int i)
 	int color;
 
 	if (i == e->iter_max)
-		return (0x000000);
-	r = (255 - (i * 1)) * e->color;
-	g = (255 - (i * 10)) * e->color;
-	b = (255 - (i * 10)) * e->color;
+		return (e->color_m);
+	r = (255 - (i * 4)) * e->color;
+	g = (255 - (i * 6)) * e->color;
+	b = (255 - (i * 9)) * e->color;
 	color = (r << 16) + (g << 8) + b;
 	return (color);
 }
